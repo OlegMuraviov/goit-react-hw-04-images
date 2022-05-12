@@ -7,32 +7,39 @@ import Loader from 'components/Loader/Loader';
 import s from './GalleryWrap.module.css';
 
 const GalleryWrap = ({ query, toggleModal }) => {
-  const [data, setData] = useState([]);
+  const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setData([]);
+    setImages([]);
     setPage(1);
+    checkQuery();
+  }, [query]);
 
-    if (query === ' ') setError(new Error('Please input value'));
+  useEffect(() => {
+    checkQuery();
+  }, [page]);
+
+  const checkQuery = () => {
+    if (query === '') setError(new Error('Please input value'));
     else {
       getImagesFromApi();
     }
-  }, [query, data, page]);
+  };
 
   const getImagesFromApi = () => {
     setIsLoading(true);
     setError(null);
 
-    pixabayApi({ query: query, page: page })
-      .then(({ data, totalHits }) => {
-        if (!data.length) {
+    pixabayApi({ query, page })
+      .then(({ images, totalHits }) => {
+        if (!images.length) {
           throw new Error('No images ');
         }
-        setData(prev => [...prev, ...data]);
+        setImages(prev => [...prev, ...images]);
         setTotal(totalHits);
       })
       .catch(error => setError(error))
@@ -46,8 +53,8 @@ const GalleryWrap = ({ query, toggleModal }) => {
   return (
     <div className={s.galleryWrap}>
       {isLoading && <Loader />}
-      <ImageGallery data={data} toggleModal={toggleModal} />
-      {data.length > 0 && data.length < total && (
+      <ImageGallery data={images} toggleModal={toggleModal} />
+      {images.length > 0 && images.length < total && (
         <Button handleLoadMore={handleLoadMore} />
       )}
       {error && <h2>{error.message}</h2>}

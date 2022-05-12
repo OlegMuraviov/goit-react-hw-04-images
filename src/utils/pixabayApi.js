@@ -16,5 +16,5 @@ export const pixabayApi = ({ query, page = 1 }) => {
 
   return axios
     .get()
-    .then(({ data }) => ({ data: data.hits, totalHits: data.totalHits }));
+    .then(({ data }) => ({ images: data.hits, totalHits: data.totalHits }));
 };
