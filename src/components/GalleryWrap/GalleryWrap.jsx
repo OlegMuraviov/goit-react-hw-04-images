@@ -13,22 +13,24 @@ const GalleryWrap = ({ query, toggleModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    setImages([]);
-    setPage(1);
-    checkQuery();
-  }, [query]);
-
-  useEffect(() => {
-    checkQuery();
-  }, [page]);
-
   const checkQuery = () => {
     if (query === '') setError(new Error('Please input value'));
     else {
       getImagesFromApi();
     }
   };
+  useEffect(() => {
+    setImages([]);
+    setPage(1);
+
+    checkQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  useEffect(() => {
+    checkQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   const getImagesFromApi = () => {
     setIsLoading(true);
