@@ -13,22 +13,22 @@ const GalleryWrap = ({ query, toggleModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const checkQuery = () => {
+  const updateImages = () => {
     if (query === '') setError(new Error('Please input value'));
     else {
       getImagesFromApi();
     }
   };
+
   useEffect(() => {
     setImages([]);
-    setPage(1);
-
-    checkQuery();
+    setPage(1); // асинхронн - при изменении запроса, делает запрос со старым значением page
+    if (page === 1) updateImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   useEffect(() => {
-    checkQuery();
+    updateImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
