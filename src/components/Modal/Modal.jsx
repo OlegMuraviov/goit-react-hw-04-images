@@ -16,7 +16,8 @@ const Modal = ({ modalData, toggleModal }) => {
     return () => {
       window.removeEventListener('keydown', handleEscape);
     };
-  }, [handleEscape]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return createPortal(
     <div
