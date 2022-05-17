@@ -16,7 +16,7 @@ const Modal = ({ modalData, toggleModal }) => {
     return () => {
       window.removeEventListener('keydown', handleEscape);
     };
-  }, []);
+  }, [handleEscape]);
 
   return createPortal(
     <div
